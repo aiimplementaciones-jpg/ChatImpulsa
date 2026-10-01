@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>IMPULSA MVP — Reputación & Satisfacción</title>
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+  <style>
+    :root{--navy:#142746;--gold:#e4a913;--bg:#f5f7fb;--text:#1f2937;--muted:#6b7280;--card:#fff;--line:#e5e7eb;--ok:#138a4b;--warn:#b7791f;--danger:#b42318}
+    *{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+    header{background:var(--navy);color:#fff;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:5}header .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.08em}header img{width:42px;height:42px;object-fit:cover;border-radius:10px;background:#fff}nav button{background:transparent;border:0;color:#dbe4f2;padding:9px 12px;border-radius:8px;cursor:pointer}nav button.active,nav button:hover{background:#243b62;color:#fff}
+    main{max-width:1180px;margin:0 auto;padding:28px 20px}.view{display:none}.view.active{display:block}.grid{display:grid;gap:16px}.kpis{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 2px 10px rgba(20,39,70,.04)}.kpi .label{color:var(--muted);font-size:13px}.kpi .value{font-size:30px;font-weight:800;margin-top:4px;color:var(--navy)}
+    h1{margin:0 0 8px;font-size:30px;color:var(--navy)}h2{margin:0 0 12px;color:var(--navy);font-size:20px}.muted{color:var(--muted)}.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin:18px 0}.toolbar .left,.toolbar .right{display:flex;gap:8px;flex-wrap:wrap}.btn{border:0;border-radius:9px;padding:10px 14px;font-weight:700;cursor:pointer}.primary{background:var(--navy);color:#fff}.gold{background:var(--gold);color:#1d2a3a}.light{background:#eef2f7;color:var(--navy)}.danger{background:#fee4e2;color:var(--danger)}input,select,textarea{width:100%;padding:11px 12px;border:1px solid #d5dbe5;border-radius:9px;font:inherit;background:#fff}textarea{min-height:100px;resize:vertical}label{font-size:13px;font-weight:700;display:block;margin:10px 0 6px}.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.full{grid-column:1/-1}
+table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:11px 10px;border-bottom:1px solid var(--line);font-size:14px}th{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.04em}.badge{display:inline-block;padding:5px 8px;border-radius:999px;font-size:12px;font-weight:700}.available{background:#e7f7ef;color:var(--ok)}.assigned{background:#edf2ff;color:#3b4db7}.suspended{background:#fee4e2;color:var(--danger)}
+    .stars{font-size:30px;letter-spacing:2px}.star{cursor:pointer;color:#cbd5e1}.star.selected{color:var(--gold)}.public{max-width:520px;margin:20px auto}.public .hero{text-align:center}.public .logo{width:110px;height:110px;object-fit:cover;border-radius:20px;margin-bottom:10px}.public .business{font-size:26px;font-weight:800;color:var(--navy)}.public .rating{text-align:center;margin:18px 0}.public .privacy{font-size:12px;color:var(--muted);display:flex;gap:7px;align-items:flex-start}.public .privacy input{width:auto;margin-top:3px}.notice{padding:12px;border-radius:10px;background:#fff8e6;border:1px solid #f4df9e;color:#6b4f0a;margin:12px 0}.success{padding:16px;border-radius:12px;background:#e9f8ef;border:1px solid #b9e4c9;color:#135b35}.hidden{display:none!important}.qrbox{display:flex;align-items:center;gap:18px;flex-wrap:wrap}.modal{position:fixed;inset:0;background:rgba(15,23,42,.55);display:none;align-items:center;justify-content:center;padding:20px;z-index:20}.modal.show{display:flex}.modal .card{width:min(620px,100%);max-height:90vh;overflow:auto}.small{font-size:12px}.link{color:#3657a7;text-decoration:none}.footer{padding:35px 0;text-align:center;color:var(--muted);font-size:12px}
+    @media(max-width:700px){.formgrid{grid-template-columns:1fr}header{padding:10px 14px}nav button{padding:8px 7px;font-size:12px}main{padding:20px 12px}}
+  </style>
+</head>
+<body>
+<header>
+  <div class="brand"><img src="logo.jpg" alt="IMPULSA"/><span>IMPULSA</span></div>
+  <nav>
+    <button data-view="dashboard" class="active">Dashboard</button>
+    <button data-view="businesses">Comercios</button>
+    <button data-view="stands">Habladores</button>
+    <button data-view="feedback">Feedback</button>
+    <button data-view="public">Vista cliente</button>
+  </nav>
+</header>
+<main>
+  <section id="dashboard" class="view active">
+    <h1>Dashboard</h1><p class="muted">MVP funcional local para validar el flujo de IMPULSA.</p>
+    <div class="grid kpis" style="margin:18px 0">
+      <div class="card kpi"><div class="label">Comercios</div><div class="value" id="kBusinesses">0</div></div>
+      <div class="card kpi"><div class="label">Habladores</div><div class="value" id="kStands">0</div></div>
+      <div class="card kpi"><div class="label">Evaluaciones</div><div class="value" id="kFeedback">0</div></div>
+      <div class="card kpi"><div class="label">Promedio</div><div class="value" id="kAverage">—</div></div>
+    </div>
+    <div class="grid" style="grid-template-columns:1.3fr .7fr">
+      <div class="card"><h2>Últimas evaluaciones</h2><div id="recentFeedback"></div></div>
+      <div class="card"><h2>Distribución</h2><div id="distribution"></div></div>
+    </div>
+  </section>
+
+  <section id="businesses" class="view">
+    <div class="toolbar"><div><h1>Comercios</h1><p class="muted">Clientes que recibirán habladores y evaluaciones.</p></div><button class="btn primary" onclick="openBusinessModal()">+ Nuevo comercio</button></div>
+    <div class="card"><table><thead><tr><th>Comercio</th><th>Ciudad</th><th>Google</th><th>Estado</th><th></th></tr></thead><tbody id="businessTable"></tbody></table></div>
+  </section>
+
+  <section id="stands" class="view">
+    <div class="toolbar"><div><h1>Habladores</h1><p class="muted">Inventario de QR/NFC independientes del comercio.</p></div><div class="right"><button class="btn light" onclick="openBatchModal()">+ Generar lote</button></div></div>
+    <div class="card"><table><thead><tr><th>ID</th><th>QR/NFC</th><th>Estado</th><th>Comercio</th><th></th></tr></thead><tbody id="standTable"></tbody></table></div>
+  </section>
+
+  <section id="feedback" class="view">
+    <div class="toolbar"><div><h1>Feedback</h1><p class="muted">Respuestas capturadas desde QR/NFC.</p></div><button class="btn light" onclick="exportCSV()">Exportar CSV</button></div>
+    <div class="card"><table><thead><tr><th>Fecha</th><th>Comercio</th><th>Estrellas</th><th>Cliente</th><th>Comentario</th><th>Google</th></tr></thead><tbody id="feedbackTable"></tbody></table></div>
+  </section>
+
+  <section id="public" class="view">
+    <div class="public">
+      <div class="card hero">
+        <img class="logo" src="logo.jpg" alt="IMPULSA"/>
+        <div class="business" id="publicBusiness">Selecciona un comercio</div>
+        <p class="muted">¿Cómo fue tu experiencia?</p>
+        <div id="publicStars" class="stars"></div>
+      </div>
+      <div id="publicFormCard" class="card hidden" style="margin-top:14px"></div>
+    </div>
+  </section>
+</main>
+<div class="footer">IMPULSA MVP · Reputación & Satisfacción · Prototipo local</div>
+
+<div id="modal" class="modal"><div class="card"><div id="modalContent"></div></div></div>
+<script>
+const KEY='impulsa_mvp_v1';
+const defaultData={businesses:[{id:'biz-1',name:'Hospital Veterinario San Bernardo',city:'Cali',google:'https://search.google.com/local/writereview?placeid=DEMO',status:'Activo'}],stands:[{id:'IMP-001',businessId:'biz-1',status:'Asignado'}],feedback:[]};
+let data=JSON.parse(localStorage.getItem(KEY)||'null')||defaultData;
+function save(){localStorage.setItem(KEY,JSON.stringify(data));renderAll()}
+function esc(s=''){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+function businessName(id){return data.businesses.find(b=>b.id===id)?.name||'Sin asignar'}
+function nav(){document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>showView(b.dataset.view))}
+function showView(id){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===id));renderAll()}
+function renderAll(){
+ document.getElementById('kBusinesses').textContent=data.businesses.length;document.getElementById('kStands').textContent=data.stands.length;document.getElementById('kFeedback').textContent=data.feedback.length;
+ const avg=data.feedback.length?data.feedback.reduce((a,b)=>a+b.rating,0)/data.feedback.length:0;document.getElementById('kAverage').textContent=avg?avg.toFixed(2)+' ⭐':'—';
+ document.getElementById('businessTable').innerHTML=data.businesses.map(b=>`<tr><td><b>${esc(b.name)}</b></td><td>${esc(b.city)}</td><td>${b.google?'<span class="badge available">Configurado</span>':'<span class="badge suspended">Falta URL</span>'}</td><td>${esc(b.status)}</td><td><button class="btn light" onclick="openBusinessModal('${b.id}')">Editar</button></td></tr>`).join('')||'<tr><td colspan="5">No hay comercios.</td></tr>';
+ document.getElementById('standTable').innerHTML=data.stands.map(s=>`<tr><td><b>${esc(s.id)}</b></td><td><span class="badge">QR + NFC</span></td><td><span class="badge ${s.status==='Asignado'?'assigned':s.status==='Disponible'?'available':'suspended'}">${esc(s.status)}</span></td><td>${esc(businessName(s.businessId))}</td><td><button class="btn light" onclick="showQR('${s.id}')">QR</button> <button class="btn light" onclick="assignStand('${s.id}')">Asignar</button></td></tr>`).join('')||'<tr><td colspan="5">No hay habladores.</td></tr>';
+ document.getElementById('feedbackTable').innerHTML=data.feedback.slice().reverse().map(f=>`<tr><td>${new Date(f.createdAt).toLocaleString('es-CO')}</td><td>${esc(businessName(f.businessId))}</td><td>${'⭐'.repeat(f.rating)}</td><td>${esc(f.name||'—')}<br><span class="small">${esc(f.phone||'')}</span></td><td>${esc(f.comment||'—')}</td><td>${f.googleClicked?'Sí':'No'}</td></tr>`).join('')||'<tr><td colspan="6">Aún no hay evaluaciones.</td></tr>';
+ const counts=[1,2,3,4,5].map(n=>data.feedback.filter(f=>f.rating===n).length);document.getElementById('distribution').innerHTML=counts.map((n,i)=>`<div style="margin:8px 0">${'⭐'.repeat(i+1)} <b>${n}</b></div>`).join('');
+ document.getElementById('recentFeedback').innerHTML=data.feedback.slice(-5).reverse().map(f=>`<div style="padding:10px 0;border-bottom:1px solid var(--line)"><b>${'⭐'.repeat(f.rating)}</b> · ${esc(businessName(f.businessId))}<br><span class="muted">${esc(f.comment||'Sin comentario')}</span></div>`).join('')||'<p class="muted">Todavía no hay respuestas.</p>';
+}
+function modal(html){document.getElementById('modalContent').innerHTML=html;document.getElementById('modal').classList.add('show')}
+function closeModal(){document.getElementById('modal').classList.remove('show')}
+function openBusinessModal(id){const b=data.businesses.find(x=>x.id===id)||{id:'',name:'',city:'Cali',google:'',status:'Activo'};modal(`<h2>${id?'Editar':'Nuevo'} comercio</h2><div class="formgrid"><div class="full"><label>Nombre comercial</label><input id="bn" value="${esc(b.name)}"></div><div><label>Ciudad</label><input id="bc" value="${esc(b.city)}"></div><div><label>Estado</label><select id="bs"><option ${b.status==='Activo'?'selected':''}>Activo</option><option ${b.status==='Suspendido'?'selected':''}>Suspendido</option></select></div><div class="full"><label>URL para reseña de Google</label><input id="bg" value="${esc(b.google||'')}" placeholder="https://.../"></div></div><div class="toolbar"><button class="btn light" onclick="closeModal()">Cancelar</button><button class="btn primary" onclick="saveBusiness('${id}')">Guardar</button></div>`)}
+function saveBusiness(id){const obj={id:id||'biz-'+Date.now(),name:document.getElementById('bn').value.trim(),city:document.getElementById('bc').value.trim(),google:document.getElementById('bg').value.trim(),status:document.getElementById('bs').value};if(!obj.name)return alert('Ingresa el nombre del comercio.');if(id){data.businesses=data.businesses.map(b=>b.id===id?obj:b)}else data.businesses.push(obj);closeModal();save()}
+function openBatchModal(){modal(`<h2>Generar lote de habladores</h2><p class="muted">El QR/NFC se basa en un ID independiente del comercio.</p><label>Prefijo</label><input id="prefix" value="IMP-"><label>Cantidad</label><input id="qty" type="number" min="1" max="500" value="10"><div class="toolbar"><button class="btn light" onclick="closeModal()">Cancelar</button><button class="btn primary" onclick="generateBatch()">Generar</button></div>`)}
+function generateBatch(){const p=document.getElementById('prefix').value.trim()||'IMP-';const q=Math.max(1,Math.min(500,Number(document.getElementById('qty').value)||1));const nums=data.stands.map(s=>Number((s.id.match(/(\d+)$/)||['0','0'])[1])).filter(Boolean);let next=(Math.max(0,...nums)+1);for(let i=0;i<q;i++)data.stands.push({id:p+String(next++).padStart(3,'0'),businessId:null,status:'Disponible'});closeModal();save()}
+function assignStand(id){const s=data.stands.find(x=>x.id===id);modal(`<h2>Asignar ${esc(id)}</h2><label>Comercio</label><select id="assign">${data.businesses.map(b=>`<option value="${b.id}" ${s.businessId===b.id?'selected':''}>${esc(b.name)}</option>`).join('')}<option value="">Sin asignar</option></select><div class="toolbar"><button class="btn light" onclick="closeModal()">Cancelar</button><button class="btn primary" onclick="saveAssignment('${id}')">Guardar</button></div>`)}
+function saveAssignment(id){const s=data.stands.find(x=>x.id===id);s.businessId=document.getElementById('assign').value||null;s.status=s.businessId?'Asignado':'Disponible';closeModal();save()}
+function showQR(id){const s=data.stands.find(x=>x.id===id);const url=location.href.split('#')[0]+'#rate='+encodeURIComponent(id);modal(`<h2>Hablador ${esc(id)}</h2><div class="qrbox"><div id="qr"></div><div><b>${esc(businessName(s.businessId))}</b><p class="small">URL dinámica:</p><a class="link" href="${esc(url)}">${esc(url)}</a><p class="small">La misma URL se escribiría en el chip NFC.</p></div></div><div class="toolbar"><button class="btn light" onclick="closeModal()">Cerrar</button><button class="btn primary" onclick="window.print()">Imprimir</button></div>`);new QRCode(document.getElementById('qr'),{text:url,width:180,height:180})}
+let selectedRating=0;
+function openPublicForStand(id){const s=data.stands.find(x=>x.id===id);const b=data.businesses.find(x=>x.id===s?.businessId);document.getElementById('publicBusiness').textContent=b?.name||'Comercio no asignado';selectedRating=0;renderStars();document.getElementById('publicFormCard').classList.add('hidden');showView('public')}
+function renderStars(){document.getElementById('publicStars').innerHTML=[1,2,3,4,5].map(n=>`<span class="star ${n<=selectedRating?'selected':''}" onclick="chooseRating(${n})">★</span>`).join('')}
+function chooseRating(n){selectedRating=n;renderStars();const standId=location.hash.startsWith('#rate=')?decodeURIComponent(location.hash.slice(6)):data.stands[0]?.id;const s=data.stands.find(x=>x.id===standId)||data.stands[0];const b=data.businesses.find(x=>x.id===s?.businessId);if(!b){alert('Este hablador no está asignado a un comercio.');return}const card=document.getElementById('publicFormCard');card.classList.remove('hidden');card.innerHTML=`<h2>${n===5?'¡Gracias por tu valoración!':'Cuéntanos sobre tu experiencia'}</h2>${n===5?`<p>Si deseas compartir tu experiencia públicamente, puedes hacerlo en Google.</p><div class="notice">IMPULSA registra tu valoración como parte de la medición de satisfacción del comercio.</div><button class="btn primary" onclick="googleReview('${b.id}')">⭐ Compartir mi experiencia en Google</button><button class="btn light" style="margin-left:8px" onclick="saveFive('${s.id}')">Finalizar</button>`:`<p class="muted">Tu comentario ayuda al establecimiento a mejorar.</p><label>Nombre</label><input id="pname"><label>Teléfono</label><input id="pphone" inputmode="tel"><label>Comentario</label><textarea id="pcomment"></textarea><label class="privacy"><input id="consent" type="checkbox"> Autorizo el tratamiento de mis datos personales conforme a la política de privacidad.</label><button class="btn primary" onclick="saveFeedback('${s.id}',${n})">Enviar evaluación</button>`}
+function saveFeedback(standId,rating){const s=data.stands.find(x=>x.id===standId);const consent=document.getElementById('consent').checked;if(!consent){alert('Debes aceptar el tratamiento de datos para enviar esta encuesta.');return}data.feedback.push({id:'fb-'+Date.now(),standId,businessId:s.businessId,rating,name:document.getElementById('pname').value.trim(),phone:document.getElementById('pphone').value.trim(),comment:document.getElementById('pcomment').value.trim(),googleClicked:false,createdAt:new Date().toISOString()});save();document.getElementById('publicFormCard').innerHTML='<div class="success"><b>¡Gracias!</b><br>Tu evaluación fue registrada correctamente.</div>'}
+function saveFive(standId){const s=data.stands.find(x=>x.id===standId);data.feedback.push({id:'fb-'+Date.now(),standId,businessId:s.businessId,rating:5,name:'',phone:'',comment:'',googleClicked:false,createdAt:new Date().toISOString()});save();document.getElementById('publicFormCard').innerHTML='<div class="success"><b>¡Gracias por tu valoración!</b><br>Tu respuesta fue registrada.</div>'}
+function googleReview(bid){const b=data.businesses.find(x=>x.id===bid);const s=data.stands.find(x=>x.businessId===bid)||data.stands[0];data.feedback.push({id:'fb-'+Date.now(),standId:s?.id,businessId:bid,rating:5,name:'',phone:'',comment:'',googleClicked:true,createdAt:new Date().toISOString()});save();if(b.google)window.open(b.google,'_blank');else alert('El comercio aún no tiene configurada la URL de reseña de Google.');}
+function exportCSV(){const rows=[['Fecha','Comercio','Estrellas','Nombre','Telefono','Comentario','Google']].concat(data.feedback.map(f=>[new Date(f.createdAt).toISOString(),businessName(f.businessId),f.rating,f.name||'',f.phone||'',f.comment||'',f.googleClicked?'SI':'NO']));const csv=rows.map(r=>r.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(',')).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='impulsa_feedback.csv';a.click()}
+nav();renderAll();
+if(location.hash.startsWith('#rate=')){const id=decodeURIComponent(location.hash.slice(6));openPublicForStand(id)}else renderStars();
+</script>
+</body>
+</html>
